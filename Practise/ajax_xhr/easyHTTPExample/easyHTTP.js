@@ -28,3 +28,26 @@ easyHTTP.prototype.post = function(url, data, callback){
     }
     this.http.send(JSON.stringify(data));
 }
+
+easyHTTP.prototype.put = function(url, data, callback){
+    this.http.open('POST', url, true);
+
+    this.http.onload = () => {
+        callback(null, this.http.responseText);
+    }
+    this.http.send(JSON.stringify(data));
+}
+
+easyHTTP.prototype.delete = function(url, data, callback){
+    this.http.open('DELETE', url, true);
+
+    this.http.onload = () => {
+        if(this.http.status === 200 && this.http.readyState === 4){
+            //Here in callback we will pass error first in the callback, next response
+            callback(null, "Post successfullu deleted");
+        } else {
+            callback('Error '+ this.http.status);
+        }
+    }
+    this.http.send(JSON.stringify(data));
+}
